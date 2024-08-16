@@ -1,14 +1,11 @@
 const fs = require("fs");
 const input = fs.readFileSync("/dev/stdin").toString().split(" ");
 
-const a = parseInt(input[0]);
-const b = parseInt(input[1]);
-const c = parseInt(input[2]);
-const d = parseInt(input[3]);
-const e = parseInt(input[4]);
+let sum = 0;
 
-const sqrSum = a * a + b * b + c * c + d * d + e * e;
+input.map((item) => {
+  const number = parseInt(item);
+  sum = sum + number * number;
+});
 
-const result = sqrSum % 10;
-
-console.log(result);
+console.log(sum % 10);
