@@ -16,9 +16,9 @@ words = [...new Set(words)];
 
 words.sort((a, b) => {
   if (a.length === b.length) {
-    return a.localeCompare(b);
+    return a > b ? 1 : -1;
   } else {
-    return a.length - b.length;
+    return a.length > b.length ? 1 : -1;
   }
 });
 
