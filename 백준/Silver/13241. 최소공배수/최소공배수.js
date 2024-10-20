@@ -8,17 +8,11 @@ const input = fs
   .map(Number);
 
 const getGCD = (a, b) => {
-  while (b !== 0) {
-    let temp = b;
-    b = a % b;
-    a = temp;
-  }
-  return a;
+  return b === 0 ? a : getGCD(b, a % b);
 };
 
 const getLCM = (num1, num2) => {
-  const gcd = getGCD(num1, num2);
-  return (num1 * num2) / gcd;
+  return (num1 * num2) / getGCD(num1, num2);
 };
 
 console.log(getLCM(input[0], input[1]));
