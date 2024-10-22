@@ -16,10 +16,10 @@ numbers.forEach((num) => {
   }
 });
 
-let output = "";
+let result = [];
 for (let i = 0; i < M; i++) {
   const target = findNumbers[i];
-  output += (numberCountMap.get(target) || 0) + " ";
+  result.push(numberCountMap.get(target) || 0);
 }
 
-console.log(output.trim());
+console.log(result.join(" "));
