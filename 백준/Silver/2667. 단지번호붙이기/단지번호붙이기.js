@@ -2,7 +2,7 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-//DFS
+//BFS
 function solution(board) {
   let dx = [-1, 0, 1, 0];
   let dy = [0, 1, 0, -1];
