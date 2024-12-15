@@ -1,14 +1,16 @@
 const fs = require("fs");
-const filePath = process.platform === "linux" ? "dev/stdin" : "input.txt";
-const input = fs.readFileSync(filePath).toString().trim().split(" ");
+const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
+const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const n = Number(input[0]);
+const tryCount = Number(input.shift());
+const result = [];
 
-for (let i = n; i > 0; i--) {
-  let result = "";
+for (let i = tryCount; i >= 1; i--) {
+  let star = "";
   for (let j = 1; j <= i; j++) {
-    result = result + "*";
+    star += "*";
   }
-  result = result + " ";
-  console.log(result);
+  result.push(star);
 }
+
+console.log(result.join("\n"));
