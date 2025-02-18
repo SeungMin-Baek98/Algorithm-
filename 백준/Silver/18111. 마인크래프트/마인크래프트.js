@@ -27,11 +27,11 @@ for (let height = 0; height <= 256; height++) {
     }
   }
 
-  if (block >= 0) {
-    if (time <= minTime) {
-      minTime = time;
-      maxHeight = height;
-    }
+  if (block < 0) break;
+
+  if (time <= minTime) {
+    minTime = time;
+    maxHeight = height;
   }
 }
 
