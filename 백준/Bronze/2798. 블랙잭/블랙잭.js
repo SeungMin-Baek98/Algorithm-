@@ -2,16 +2,16 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const [cards, stCount] = input[0].split(" ").map(Number);
-const nums = input[1].split(" ").map(Number);
+const [N, M] = input.shift().split(" ").map(Number);
+const cards = input.toString().split(" ").map(Number);
 
-let result = 0;
+let result = Number.MIN_SAFE_INTEGER;
 
-for (let i = 0; i < cards - 2; i++) {
-  for (let j = i + 1; j < cards - 1; j++) {
-    for (let k = j + 1; k < cards; k++) {
-      let sum = nums[i] + nums[j] + nums[k];
-      if (sum <= stCount) {
+for (let i = 0; i < cards.length; i++) {
+  for (let j = i + 1; j < cards.length; j++) {
+    for (let k = j + 1; k < cards.length; k++) {
+      const sum = cards[i] + cards[j] + cards[k];
+      if (sum <= M) {
         result = Math.max(result, sum);
       }
     }
