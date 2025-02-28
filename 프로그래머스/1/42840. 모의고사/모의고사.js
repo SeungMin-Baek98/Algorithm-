@@ -18,9 +18,9 @@ function solution(answers) {
 
   for (let i = 0; i < answer.length; i++) {
     if (answer[i] === maxScore) {
-      result.push(i + 1);
+      result.push(i + 1); // 1부터 시작하므로.
     }
   }
 
-  return result.sort((a, b) => a - b);
+  return result;
 }
