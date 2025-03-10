@@ -6,6 +6,7 @@ const N = Number(input.shift());
 let result = "";
 
 const tree = {};
+
 for (let i = 0; i < N; i++) {
   const [node, left, right] = input[i].split(" ");
   tree[node] = [left, right];
