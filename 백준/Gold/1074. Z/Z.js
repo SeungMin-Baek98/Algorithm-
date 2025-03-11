@@ -40,7 +40,6 @@ function DFS(x, y, size) {
     DFS(x + halfSize, y + halfSize, halfSize);
   }
 
-  return count;
 }
 
 DFS(0, 0, 2 ** N);
