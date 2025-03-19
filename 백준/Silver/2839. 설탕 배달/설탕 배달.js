@@ -1,21 +1,22 @@
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
-const input = fs.readFileSync(filePath).toString().trim();
+const input = fs.readFileSync(filePath).toString().trim().split(" ");
 
-const sugar = Number(input);
+let N = Number(input);
+let count = 0;
 
-function solution(m, arr) {
-  let answer = 0;
-  let dy = Array.from({ length: m + 1 }, () => Infinity);
-  dy[0] = 0;
-
-  for (let i = 0; i < arr.length; i++) {
-    for (let j = arr[i]; j <= m; j++) {
-      dy[j] = Math.min(dy[j], dy[j - arr[i]] + 1);
-    }
+while (true) {
+  if (N % 5 === 0) {
+    count += N / 5; // 5키로로 나눌 수 있는 최대 개수
+    console.log(count);
+    break;
   }
-  answer = dy[m] === Infinity ? -1 : dy[m];
-  return answer;
+
+  N -= 3; // 3키로 봉지 사용
+  count++;
+
+  if (N < 0) {
+    console.log(-1);
+    break;
+  }
 }
-const arr = [3, 5];
-console.log(solution(sugar, arr));
