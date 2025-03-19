@@ -2,50 +2,51 @@ const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const [m, n] = input.shift().split(" ").map(Number);
-const board = input.map((line) => line.split(" ").map(Number));
+const [M, N] = input.shift().split(" ").map(Number);
+const graph = input.map((line) => line.split(" ").map(Number));
 
-function solution(n, m, board) {
-  const dx = [-1, 0, 1, 0];
-  const dy = [0, 1, 0, -1];
+// 상 하 좌 우
+const dx = [-1, 1, 0, 0];
+const dy = [0, 0, -1, 1];
 
-  const queue = [];
-  let queueStart = 0; // 큐의 시작점
-  let unripeCount = 0; // 익지 않은 토마토의 개수
+const queue = [];
 
-  let day = 0;
-
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < m; j++) {
-      //토마토의 익은 위치를 queue배열에 push
-      //그게 시작점이 될것이다.
-
-      if (board[i][j] === 1) {
-        queue.push([i, j, 0]);
-      } else if (board[i][j] === 0) {
-        unripeCount++;
-      }
+// 그래프 탐색 하면서 1인지역 찾으면 queue배열에 push
+for (let i = 0; i < N; i++) {
+  for (let j = 0; j < M; j++) {
+    if (graph[i][j] === 1) {
+      queue.push([i, j]);
     }
   }
-
-  while (queueStart < queue.length) {
-    const [x, y, currentDay] = queue[queueStart++];
-    day = Math.max(day, currentDay);
-
-    for (let k = 0; k < 4; k++) {
-      let nx = x + dx[k];
-      let ny = y + dy[k];
-
-      if (nx >= 0 && nx < n && ny >= 0 && ny < m && board[nx][ny] === 0) {
-        //토마토 기준 상우하좌 익음으로 전파 / board격자판 길이만큼 순회.
-        board[nx][ny] = 1;
-        unripeCount--;
-        queue.push([nx, ny, currentDay + 1]);
-      }
-    }
-  }
-
-  return unripeCount > 0 ? -1 : day;
 }
 
-console.log(solution(n, m, board));
+//BFS 탐색
+let idx = 0;
+while (idx < queue.length) {
+  let [x, y] = queue[idx++]; // x : 3 y : 5
+
+  // 4방향 탐색
+  for (let i = 0; i < 4; i++) {
+    const nx = x + dx[i];
+    const ny = y + dy[i];
+
+    if (nx >= 0 && nx < N && ny >= 0 && ny < M && graph[nx][ny] === 0) {
+      graph[nx][ny] = graph[x][y] + 1;
+      queue.push([nx, ny]);
+    }
+  }
+}
+
+// 결과 계산
+let maxDays = 0;
+for (let i = 0; i < N; i++) {
+  for (let j = 0; j < M; j++) {
+    if (graph[i][j] === 0) {
+      console.log(-1); // 익지 않은 토마토가 남아 있는 경우 -1 출력
+      return;
+    }
+    maxDays = Math.max(maxDays, graph[i][j]);
+  }
+}
+
+console.log(maxDays - 1);
