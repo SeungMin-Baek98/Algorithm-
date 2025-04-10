@@ -1,17 +1,19 @@
+// 백준 2798
+// 블랙잭
+
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const [N, M] = input.shift().split(" ").map(Number);
-const cards = input.toString().split(" ").map(Number);
+const [cardCounts, totalSum] = input.shift().split(" ").map(Number);
+const cards = input.shift().split(" ").map(Number);
+let result = 0;
 
-let result = Number.MIN_SAFE_INTEGER;
-
-for (let i = 0; i < cards.length; i++) {
-  for (let j = i + 1; j < cards.length; j++) {
-    for (let k = j + 1; k < cards.length; k++) {
+for (let i = 0; i < cardCounts; i++) {
+  for (let j = i + 1; j < cardCounts; j++) {
+    for (let k = j + 1; k < cardCounts; k++) {
       const sum = cards[i] + cards[j] + cards[k];
-      if (sum <= M) {
+      if (sum <= totalSum) {
         result = Math.max(result, sum);
       }
     }
