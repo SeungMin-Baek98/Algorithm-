@@ -1,59 +1,59 @@
+// 백준 1012
+// 유기농 배추
+
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-function solution(n, m, board) {
-  const dx = [-1, 0, 1, 0];
-  const dy = [0, 1, 0, -1];
-  let answer = 0;
-  const queue = [];
+const T = Number(input.shift());
+const results = [];
 
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < m; j++) {
-      if (board[i][j] === 1) {
-        queue.push([i, j]);
-        board[i][j] = 0;
-        answer++;
+for (let t = 0; t < T; t++) {
+  const [M, N, K] = input.shift().split(" ").map(Number);
 
-        while (queue.length > 0) {
-          const [x, y] = queue.shift();
+  const board = Array.from({ length: M }, () => Array(N).fill(0)); // 2차원보드 생성
+  const isVisited = Array.from({ length: M }, () => Array(N).fill(false)); // 2차원보드 생성
 
-          for (let k = 0; k < 4; k++) {
-            const nx = x + dx[k];
-            const ny = y + dy[k];
+  // 상 하 좌 우
+  const dx = [-1, 1, 0, 0];
+  const dy = [0, 0, -1, 1];
 
-            // 유효 범위 및 방문 여부 확인
-            if (nx >= 0 && nx < n && ny >= 0 && ny < m && board[nx][ny] === 1) {
-              board[nx][ny] = 0;
-              queue.push([nx, ny]);
-            }
-          }
-        }
+  for (let i = 0; i < K; i++) {
+    const [x, y] = input.shift().split(" ").map(Number);
+    board[x][y] = 1;
+  }
+
+  function DFS(x, y) {
+    isVisited[x][y] = true;
+
+    for (let i = 0; i < 4; i++) {
+      const nx = x + dx[i];
+      const ny = y + dy[i];
+
+      if (
+        nx >= 0 &&
+        nx < M &&
+        ny >= 0 &&
+        ny < N &&
+        board[nx][ny] === 1 &&
+        !isVisited[nx][ny]
+      ) {
+        DFS(nx, ny);
       }
     }
   }
 
-  return answer;
-}
+  let count = 0;
 
-const T = Number(input.shift());
-let index = 0;
-const result = [];
-
-for (let t = 0; t < T; t++) {
-  // M 가로, N 세로
-  const [M, N, K] = input[index++].split(" ").map(Number);
-
-  // 2차원 배열 생성
-  const board = Array.from({ length: N }, () => Array(M).fill(0));
-
-  // 배추 위치 설정
-  for (let i = 0; i < K; i++) {
-    const [x, y] = input[index++].split(" ").map(Number);
-    board[y][x] = 1;
+  for (let i = 0; i < M; i++) {
+    for (let j = 0; j < N; j++) {
+      if (board[i][j] === 1 && !isVisited[i][j]) {
+        DFS(i, j);
+        count++;
+      }
+    }
   }
-
-  result.push(solution(N, M, board));
+  results.push(count);
 }
 
-console.log(result.join("\n"));
+console.log(results.join("\n"));
