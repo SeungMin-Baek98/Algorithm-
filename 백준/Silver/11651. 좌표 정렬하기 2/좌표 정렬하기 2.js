@@ -1,15 +1,15 @@
+// 백준 11651
+// 좌표 정렬하기 2
+
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const tryCount = Number(input[0]);
-let result = [];
-for (let i = 1; i <= tryCount; i++) {
-  const [x, y] = input[i].split(" ").map(Number);
-  result.push([x, y]);
-}
+const N = Number(input.shift());
 
-result.sort((a, b) => {
+const dots = input.map((item) => item.split(" ").map(Number));
+
+dots.sort((a, b) => {
   if (a[1] === b[1]) {
     return a[0] - b[0];
   } else {
@@ -17,6 +17,4 @@ result.sort((a, b) => {
   }
 });
 
-for (let i = 0; i < tryCount; i++) {
-  console.log(result[i].join(" "));
-}
+dots.forEach((item) => console.log(item.join(" ")));
