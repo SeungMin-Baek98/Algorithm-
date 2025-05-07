@@ -1,36 +1,41 @@
+// 백준 1987
+// 알파벳
+
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
 const [R, C] = input.shift().split(" ").map(Number);
-const edges = input.map((v) => v.split(""));
+const alphabets = input.map((line) => line.split(""));
+const visited = new Array(26).fill(false);
+let answer = 0;
 
-function solution(R, C, board) {
-  const dx = [-1, 0, 1, 0];
-  const dy = [0, 1, 0, -1];
-  let answer = 0;
+function DFS(x, y, cnt) {
+  answer = Math.max(answer, cnt);
 
-  function DFS(x, y, visited, distance) {
-    answer = Math.max(answer, distance);
-    for (let k = 0; k < 4; k++) {
-      let nx = x + dx[k];
-      let ny = y + dy[k];
+  // 대문자 알파벳 아스키코드로 변환
+  visited[alphabets[x][y].charCodeAt() - 65] = true;
 
-      if (nx >= 0 && nx < R && ny >= 0 && ny < C) {
-        const char = board[nx][ny];
-        if (!visited.has(char)) {
-          visited.add(char);
-          DFS(nx, ny, visited, distance + 1);
-          visited.delete(char);
-        }
+  // 상 하 좌 우
+  const dx = [-1, 1, 0, 0];
+  const dy = [0, 0, -1, 1];
+
+  for (let k = 0; k < 4; k++) {
+    const nx = x + dx[k];
+    const ny = y + dy[k];
+
+    if (nx >= 0 && nx < R && ny >= 0 && ny < C) {
+      const nextChar = alphabets[nx][ny].charCodeAt() - 65;
+      if (!visited[nextChar]) {
+        DFS(nx, ny, cnt + 1);
       }
     }
   }
 
-  const visited = new Set();
-  visited.add(board[0][0]);
-  DFS(0, 0, visited, 1);
-  return answer;
+  // 백트래킹 -> 방문 상태 복원
+  visited[alphabets[x][y].charCodeAt() - 65] = false;
 }
 
-console.log(solution(R, C, edges));
+DFS(0, 0, 1);
+
+console.log(answer);
