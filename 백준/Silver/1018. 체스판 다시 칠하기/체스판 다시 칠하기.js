@@ -1,59 +1,55 @@
+// 백준 1018
+// 체스판 다시 칠하기
+
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
+const whiteBoard = [
+  ["W", "B", "W", "B", "W", "B", "W", "B"],
+  ["B", "W", "B", "W", "B", "W", "B", "W"],
+  ["W", "B", "W", "B", "W", "B", "W", "B"],
+  ["B", "W", "B", "W", "B", "W", "B", "W"],
+  ["W", "B", "W", "B", "W", "B", "W", "B"],
+  ["B", "W", "B", "W", "B", "W", "B", "W"],
+  ["W", "B", "W", "B", "W", "B", "W", "B"],
+  ["B", "W", "B", "W", "B", "W", "B", "W"],
+];
+
+const blackBoard = [
+  ["B", "W", "B", "W", "B", "W", "B", "W"],
+  ["W", "B", "W", "B", "W", "B", "W", "B"],
+  ["B", "W", "B", "W", "B", "W", "B", "W"],
+  ["W", "B", "W", "B", "W", "B", "W", "B"],
+  ["B", "W", "B", "W", "B", "W", "B", "W"],
+  ["W", "B", "W", "B", "W", "B", "W", "B"],
+  ["B", "W", "B", "W", "B", "W", "B", "W"],
+  ["W", "B", "W", "B", "W", "B", "W", "B"],
+];
+
 const [N, M] = input.shift().split(" ").map(Number);
-const board = input.map((value) => value.split(""));
+const board = input.map((line) => line.split(""));
 
-// 8 * 8 체스판 하얀색이 먼저시작하는 경우
-const whiteFirst = [
-  ["W", "B", "W", "B", "W", "B", "W", "B"],
-  ["B", "W", "B", "W", "B", "W", "B", "W"],
-  ["W", "B", "W", "B", "W", "B", "W", "B"],
-  ["B", "W", "B", "W", "B", "W", "B", "W"],
-  ["W", "B", "W", "B", "W", "B", "W", "B"],
-  ["B", "W", "B", "W", "B", "W", "B", "W"],
-  ["W", "B", "W", "B", "W", "B", "W", "B"],
-  ["B", "W", "B", "W", "B", "W", "B", "W"],
-];
+let min = Number.MAX_SAFE_INTEGER;
 
-// 8  * 8 체스판 검은색이 먼저 시작하는 경우
-const blackFirst = [
-  ["B", "W", "B", "W", "B", "W", "B", "W"],
-  ["W", "B", "W", "B", "W", "B", "W", "B"],
-  ["B", "W", "B", "W", "B", "W", "B", "W"],
-  ["W", "B", "W", "B", "W", "B", "W", "B"],
-  ["B", "W", "B", "W", "B", "W", "B", "W"],
-  ["W", "B", "W", "B", "W", "B", "W", "B"],
-  ["B", "W", "B", "W", "B", "W", "B", "W"],
-  ["W", "B", "W", "B", "W", "B", "W", "B"],
-];
+for (let startRow = 0; startRow <= N - 8; startRow++) {
+  for (let startCol = 0; startCol <= M - 8; startCol++) {
+    let whitePaint = 0;
+    let blackPaint = 0;
 
-let minimum = Number.MAX_SAFE_INTEGER;
+    for (let i = 0; i < 8; i++) {
+      for (let j = 0; j < 8; j++) {
+        if (board[startRow + i][startCol + j] !== whiteBoard[i][j]) {
+          whitePaint++;
+        }
 
-// 8 * 8 체스판을 검사하는 함수
-const checkBoard = (x, y, board) => {
-  let whiteFirstCount = 0;
-  let blackFirstCount = 0;
-
-  for (let i = x; i < x + 8; i++) {
-    for (let j = y; j < y + 8; j++) {
-      if (board[i][j] !== whiteFirst[i - x][j - y]) {
-        whiteFirstCount++;
-      }
-      if (board[i][j] !== blackFirst[i - x][j - y]) {
-        blackFirstCount++;
+        if (board[startRow + i][startCol + j] !== blackBoard[i][j]) {
+          blackPaint++;
+        }
       }
     }
-  }
-  return Math.min(whiteFirstCount, blackFirstCount);
-};
-
-// 8 * 8 체스판이 들어갈 수 있는 범위를 설정해야한다.
-for (let i = 0; i < N - 7; i++) {
-  for (let j = 0; j < M - 7; j++) {
-    minimum = Math.min(minimum, checkBoard(i, j, board));
+    min = Math.min(min, whitePaint, blackPaint);
   }
 }
 
-console.log(minimum);
+console.log(min);
