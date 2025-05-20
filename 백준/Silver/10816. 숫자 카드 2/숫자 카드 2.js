@@ -1,27 +1,29 @@
-// 백준 10816
-// 숫자 카드 2
+// 백준 2178
+// 숫자 카드2
+
 const fs = require("fs");
 const filePath = process.platform === "linux" ? "/dev/stdin" : "input.txt";
 const input = fs.readFileSync(filePath).toString().trim().split("\n");
 
-const haveNums = input[1].split(" ").map(Number);
-const findNum = input[3].split(" ").map(Number);
-const findNumMap = new Map();
+const N = input[1].split(" ").map(Number);
+const map = new Map();
 
-for (let i = 0; i < findNum.length; i++) {
-  findNumMap.set(findNum[i], 0);
-}
-
-for (let i = 0; i < haveNums.length; i++) {
-  const num = haveNums[i];
-  if (findNumMap.has(num)) {
-    findNumMap.set(num, findNumMap.get(num) + 1);
+for (let i = 0; i < N.length; i++) {
+  if (map.has(N[i])) {
+    map.set(N[i], map.get(N[i]) + 1);
+  } else {
+    map.set(N[i], 1);
   }
 }
 
+const M = input[3].split(" ").map(Number);
 const result = [];
-for (let i = 0; i < findNum.length; i++) {
-  result.push(findNumMap.get(findNum[i]));
+for (let i = 0; i < M.length; i++) {
+  if (map.has(M[i])) {
+    result.push(map.get(M[i]));
+  } else {
+    result.push(0);
+  }
 }
 
 console.log(result.join(" "));
