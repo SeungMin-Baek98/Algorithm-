@@ -1,20 +1,27 @@
+/**
+ * 실패율 (내풀이)
+ * N -> 전체 스테이지 개수
+ * Stages -> 사용자가 멈춰있는 스테이지의 번호 배열
+ * 결과값 -> 내림차순으로 정렬
+ */
 function solution(N, stages) {
-  const answer = [];
+  // stages배열에 filter를 걸어서 각 스테이지별로 그 스테이지와 숫자가 같거나 혹은 큰 숫자들의 개수를 분모에 추가
+  // stages배열에 filter를 걸어서 각 스테이지별로 그 스테이지와 숫자가 같은걸 분자에 추가
+  // 그래서 비교를 해서 내림차순으로 정렬
 
-  for (let i = 1; i <= N; i++) {
-    const notClear = stages.filter((value) => value === i).length; // 스테이지에 도달했으나 클리어 하지못한 플레이어 수
-    const clear = stages.filter((value) => value >= i).length; // 스테이지에 도달한 총 플레이어 수
-    const failRate = notClear / clear; // 실패율 계산
+  const failureRates = [];
 
-    answer.push({ stage: i, rate: failRate });
+  for (let stage = 0; stage < N; stage++) {
+    const stageNumber = stage + 1;
+    const reachedUsers = stages.filter((s) => s >= stageNumber).length;
+    const failedUsers = stages.filter((s) => s === stageNumber).length;
+
+    // 분자가 0이면 실패율 0 아니면 실패율 계산
+    const failureRate = failedUsers === 0 ? 0 : failedUsers / reachedUsers;
+
+    failureRates.push({ stage: stageNumber, rate: failureRate });
   }
+  failureRates.sort((a, b) => b.rate - a.rate);
 
-  answer.sort((a, b) => {
-    // 실패율이 같으면 작은 번호의 스테이지가 앞에 온다.
-    if (a.rate === b.rate) return a.stage - b.stage;
-    // 그 외의 경우 실패율이 높은 스테이지가 앞에 온다.
-    else return b.rate - a.rate;
-  });
-
-  return answer.map((value) => value.stage);
+  return failureRates.map((item) => item.stage);
 }
