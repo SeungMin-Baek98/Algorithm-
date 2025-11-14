@@ -1,27 +1,41 @@
-// LV.2 방문 길이
+/** 좌표평면을 벗어나는지 체크하는 함수 */
+function isValidMove(nx, ny) {
+  return nx >= -5 && nx <= 5 && ny >= -5 && ny <= 5;
+}
+
+/** 좌표평면을 이동하는 함수 */
+function updateLocation(x, y, dir) {
+  switch (dir) {
+    case "U":
+      return [x, y + 1];
+    case "D":
+      return [x, y - 1];
+    case "R":
+      return [x + 1, y];
+    case "L":
+      return [x - 1, y];
+  }
+}
+
 function solution(dirs) {
-  const move = {
-    U: [0, 1],
-    D: [0, -1],
-    R: [1, 0],
-    L: [-1, 0],
-  };
-  const visited = new Set();
-  let start = [0, 0];
+  let startPoint = [0, 0];
 
-  for (let i = 0; i < dirs.length; i++) {
-    const [dx, dy] = move[dirs[i]];
-    const nx = start[0] + dx;
-    const ny = start[1] + dy;
+  const visited = new Set(); // 겹치는 좌표는 1개로 처리하기 위함
+  for (const dir of dirs) {
+    // 주어진 명령어로 움직이면서 좌표 저장
+    const [nx, ny] = updateLocation(startPoint[0], startPoint[1], dir);
 
-    if (nx > 5 || nx < -5 || ny > 5 || ny < -5) continue;
+    if (!isValidMove(nx, ny)) {
+      // 벗어난 좌표는 인정하지 않음
+      continue;
+    }
 
-    visited.add(`${start[0]},${start[1]}-${nx},${ny}`);
-    visited.add(`${nx},${ny}-${start[0]},${start[1]}`);
-    start[0] = nx;
-    start[1] = ny;
+    // A 에서 B로 간 경우 B에서 A도 추가해야함 (총 경로의 개수는 방향성이 없다.)
+    visited.add(`${startPoint[0]}${startPoint[1]}${nx}${ny}`);
+    visited.add(`${nx}${ny}${startPoint[0]}${startPoint[1]}`);
+
+    [startPoint[0], startPoint[1]] = [nx, ny];
   }
 
-  var answer = visited.size /2 ;
-  return answer;
+  return visited.size / 2;
 }
