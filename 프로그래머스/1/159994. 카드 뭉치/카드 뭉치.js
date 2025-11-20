@@ -10,5 +10,5 @@ function solution(cards1, cards2, goal) {
       return "No";
     }
   }
-  return goal.length === 0 ? "Yes" : "No";
+  return "Yes"
 }
