@@ -1,6 +1,13 @@
-function solution(n, m) {
-  const gcd = (n, m) => (n % m === 0 ? m : gcd(m, n % m));
-  const lcm = (n, m) => (n * m) / gcd(n, m);
+// 최대공약수 구하기 (재귀)
+function getGCM(a, b) {
+  return a % b === 0 ? b : getGCM(b, a % b);
+}
 
-  return [gcd(n, m), lcm(n, m)];
+// 최소공배수 구하기
+function getLCM(a, b) {
+  return (a * b) / getGCM(a, b);
+}
+
+function solution(n, m) {
+  return [getGCM(n, m), getLCM(n, m)];
 }
