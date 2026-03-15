@@ -1,20 +1,18 @@
 function solution(n) {
-  let answer = 0;
+  let count = 0;
+  let sum = 0;
+  let left = 1;
 
-  for (let i = 1; i < n; i++) {
-    let sum = 0;
-    for (let j = i; j < n; j++) {
-      sum += j;
+  for (let right = 1; right <= n; right++) {
+    sum += right;
 
-      if (sum === n) {
-        answer++;
-        break;
-      }
-
-      if (sum + j > n) {
-        break;
-      }
+    while (sum > n) {
+      sum -= left;
+      left++;
     }
+
+    if (sum === n) count++;
   }
-  return answer + 1;
+
+  return count;
 }
