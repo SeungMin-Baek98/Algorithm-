@@ -2,7 +2,7 @@ function solution(s) {
   let transformCount = 0; // 몇번 변환됐는지 카운트
   let removedZeroCOunt = 0; // 0 횟수 카운트
 
-  // s의 길이가 1될떄까지 while
+  // s가 "1"이 될때까지 while
   while (s !== "1") {
     const zeroCount = s.split("").filter((item) => item === "0").length;
     removedZeroCOunt += zeroCount;
