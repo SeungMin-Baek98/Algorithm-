@@ -1,18 +1,31 @@
+// function solution(n) {
+//   let answer = 0;
+
+//   for (let i = 1; i < n; i++) {
+//     let sum = 0;
+//     for (let j = i; j < n; j++) {
+//       sum += j;
+
+//       if (sum === n) {
+//         answer++;
+//         break;
+//       }
+
+//       if (sum + j > n) {
+//         break;
+//       }
+//     }
+//   }
+//   return answer + 1;
+// }
+
+
 function solution(n) {
-  let count = 0;
-  let sum = 0;
-  let left = 1;
+  let answer = 0;
 
-  for (let right = 1; right <= n; right++) {
-    sum += right;
-
-    while (sum > n) {
-      sum -= left;
-      left++;
-    }
-
-    if (sum === n) count++;
+  for (let i = 1; i <= n; i += 2) {
+    if (n % i === 0) answer++;
   }
 
-  return count;
+  return answer;
 }
