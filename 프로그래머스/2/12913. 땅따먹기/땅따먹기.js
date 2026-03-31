@@ -1,23 +1,15 @@
 function solution(land) {
-  if (land.length === 0) {
-    return 0;
-  }
+  const dp = [[...land[0]]];
 
-  // dp[i][j] = i행 j열을 밟았을 때 얻을 수 있는 최대 점수
-  const dp = land.map((row) => [...row]);
+  for (let i = 1; i < land.length; i++) {
+    const row = [];
 
-  for (let i = 1; i < dp.length; i++) {
-    for (let j = 0; j < dp[i].length; j++) {
-      let prevMax = 0;
+    row.push(Math.max(dp[i - 1][1], dp[i - 1][2], dp[i - 1][3]) + land[i][0]);
+    row.push(Math.max(dp[i - 1][0], dp[i - 1][2], dp[i - 1][3]) + land[i][1]);
+    row.push(Math.max(dp[i - 1][0], dp[i - 1][1], dp[i - 1][3]) + land[i][2]);
+    row.push(Math.max(dp[i - 1][0], dp[i - 1][1], dp[i - 1][2]) + land[i][3]);
 
-      for (let k = 0; k < dp[i - 1].length; k++) {
-        if (j !== k) {
-          prevMax = Math.max(prevMax, dp[i - 1][k]);
-        }
-      }
-
-      dp[i][j] += prevMax;
-    }
+    dp.push(row);
   }
 
   return Math.max(...dp[dp.length - 1]);
