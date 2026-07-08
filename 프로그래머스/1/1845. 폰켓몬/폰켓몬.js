@@ -1,7 +1,5 @@
 function solution(nums) {
-  var answer = 0;
-  const arr = [...new Set(nums)];
+  const setArr = new Set(nums);
 
-  return (answer =
-    arr.length <= nums.length / 2 ? arr.length : nums.length / 2);
+  return setArr.size > nums.length / 2 ? Math.min(setArr.size, nums.length/2) : setArr.size;
 }
