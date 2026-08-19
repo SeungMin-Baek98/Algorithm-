@@ -1,26 +1,23 @@
 function solution(progresses, speeds) {
-  // 각각 몇일 씩 걸리는지 파악해야댐
-  // Math.ceil() 로 계산
-  const remainDays = [];
+  // 각각 몇일 걸리는지 배열 생성
+  const days = progresses.map((progress, index) =>
+    Math.ceil((100 - progress) / speeds[index]),
+  );
 
-  for (let i = 0; i < progresses.length; i++) {
-    remainDays.push(Math.ceil((100 - progresses[i]) / speeds[i]));
-  }
-
+  // 기준일 지정
   const answer = [];
-  let deployDay = remainDays[0]; // 첫번째 일 수 기준
-  let count = 1; // 1일 선언
+  let maxDay = days[0];
+  let count = 1;
 
-  for (let i = 1; i < remainDays.length; i++) {
-    if (deployDay >= remainDays[i]) {
+  for (let i = 1; i < days.length; i++) {
+    if (maxDay >= days[i]) {
       count++;
     } else {
       answer.push(count);
-      deployDay = remainDays[i];
+      maxDay = days[i];
       count = 1;
     }
   }
   answer.push(count);
-
   return answer;
 }
