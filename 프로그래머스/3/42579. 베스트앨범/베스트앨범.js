@@ -1,29 +1,41 @@
 function solution(genres, plays) {
-  const obj = {};
-  const songs = [];
-  const answer = [];
+  const obj = {}; // 장르랑 재생된 노래 수록
+  const result = [];
   for (let i = 0; i < genres.length; i++) {
     const genre = genres[i];
-    obj[genre] = (obj[genre] || 0) + plays[i];
 
-    songs.push({ genre, play: plays[i], index: i });
+    if (!obj[genre]) {
+      obj[genre] = {
+        total: 0,
+        songs: [],
+      };
+    }
+
+    obj[genre].total += plays[i];
+    obj[genre].songs.push({
+      index: i,
+      play: plays[i],
+    });
   }
+  const sortedGenre = Object.entries(obj).sort(
+    ([, a], [, b]) => b.total - a.total,
+  );
 
-  const sortedGenre = Object.entries(obj).sort((a, b) => b[1] - a[1]);
+  for (const [genre, data] of sortedGenre) {
+    data.songs.sort((a, b) => {
+      if (a.play !== b.play) {
+        return b.play - a.play;
+      }
 
-  for (const [genre] of sortedGenre) {
-    const genreSongs = songs
-      .filter((song) => song.genre === genre)
-      .sort((a, b) => {
-        if (a.play === b.play) return a.play - b.play;
-        else return b.play - a.play;
-      })
-      .slice(0, 2);
+      return a.index - b.index;
+    });
 
-    for (const song of genreSongs) {
-      answer.push(song.index);
+    const selectedSongs = data.songs.slice(0, 2);
+
+    for (const song of selectedSongs) {
+      result.push(song.index);
     }
   }
 
-  return answer;
+  return result;
 }
