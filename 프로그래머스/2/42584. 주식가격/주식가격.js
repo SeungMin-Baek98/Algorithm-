@@ -1,16 +1,15 @@
-
 function solution(prices) {
-  const n = prices.length;
-  const arr = Array.from({ length: n }).fill(0);
+  const result = [];
 
-  for (let i = 0; i < n; i++) {
-    for (let j = i + 1; j < n; j++) {
-      arr[i]++;
-      if (prices[i] > prices[j]) {
-        break;
-      }
+  for (let i = 0; i < prices.length; i++) {
+    let seconds = 0;
+    for (let j = i + 1; j < prices.length; j++) {
+      seconds++;
+
+      if (prices[j] < prices[i]) break;
     }
-  }
 
-  return arr;
+    result.push(seconds);
+  }
+  return result;
 }
