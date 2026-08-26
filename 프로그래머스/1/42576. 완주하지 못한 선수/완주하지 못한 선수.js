@@ -1,17 +1,16 @@
 function solution(participant, completion) {
-  const people = {};
+  const obj = {};
 
   for (let i = 0; i < participant.length; i++) {
-    people[participant[i]] = (people[participant[i]] || 0) + 1;
+    obj[participant[i]] = (obj[participant[i]] || 0) + 1;
   }
 
   for (let i = 0; i < completion.length; i++) {
-    people[completion[i]] = people[completion[i]] - 1;
+    obj[completion[i]] = obj[completion[i]] - 1;
   }
-  return Object.entries(people)
-    .filter(([name, count]) => count > 0)
-    .map(([name, count]) => {
-      return name;
-    })
+
+  return Object.entries(obj)
+    .filter(([name, complete]) => complete > 0)
+    .map(([name]) => name)
     .join("");
 }
