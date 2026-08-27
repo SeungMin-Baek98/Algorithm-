@@ -1,8 +1,9 @@
 function solution(nums) {
-  const maxKind = nums.length / 2;
-  const removeDupli = [...new Set(nums)];
+  const set = [...new Set(nums)];
+  const length = set.length;
+  const pockemonCount = nums.length / 2;
 
-  if (removeDupli.length === maxKind) return maxKind;
-  else if (removeDupli.length < maxKind) return removeDupli.length;
-  else return maxKind;
+  if (length > pockemonCount) return pockemonCount;
+  else if (length === pockemonCount) return pockemonCount;
+  else return length;
 }
